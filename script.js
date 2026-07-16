@@ -32,6 +32,8 @@ const macros = [
 
 "/flobby (CÓDIGO AZUL) ¡Se requiere oficial en el hospital! ¡Persona fuera de control o no abandona el hospital!",
 
+"/flobby (CODIGO VIOLETA) Personal médico bajo situación de acoso, Requerimos apoyo de altos rangos, policial o de administración",
+
 "/flobby Entrenando Nuevo Enfermero (Macros / Rol)",
 
 "/flobby Vehículo Médico Encontrado (Equipo de Logística)",
@@ -44,79 +46,59 @@ const macros = [
 
 ];
 
-
 const lista = document.getElementById("listaMacros");
 const buscador = document.getElementById("buscador");
-
 
 function mostrarMacros(filtro = "") {
 
     lista.innerHTML = "";
 
-
     macros
-    .filter(macro => 
-        macro.toLowerCase().includes(filtro.toLowerCase())
-    )
-    .forEach(macro => {
+        .filter(macro =>
+            macro.toLowerCase().includes(filtro.toLowerCase())
+        )
+        .forEach(macro => {
 
+            const tarjeta = document.createElement("div");
 
-        const tarjeta = document.createElement("div");
+            tarjeta.className = "macro-card";
 
-        tarjeta.className = "macro-card";
+            tarjeta.innerHTML = `
+                <div class="macro-texto">
+                    ${macro}
+                </div>
 
+                <button class="boton-copiar">
+                    📋 COPIAR
+                </button>
+            `;
 
-        tarjeta.innerHTML = `
+            const boton = tarjeta.querySelector("button");
 
-        <div class="macro-texto">
-        ${macro}
-        </div>
+            boton.onclick = () => {
 
+                navigator.clipboard.writeText(macro);
 
-        <button class="boton-copiar">
-        📋 COPIAR
-        </button>
+                boton.innerHTML = "✅ COPIADO";
 
-        `;
+                setTimeout(() => {
 
+                    boton.innerHTML = "📋 COPIAR";
 
-        const boton = tarjeta.querySelector("button");
+                }, 1500);
 
+            };
 
-        boton.onclick = () => {
+            lista.appendChild(tarjeta);
 
-
-            navigator.clipboard.writeText(macro);
-
-
-            boton.innerHTML = "✅ COPIADO";
-
-
-            setTimeout(()=>{
-
-                boton.innerHTML="📋 COPIAR";
-
-            },1500);
-
-
-        };
-
-
-        lista.appendChild(tarjeta);
-
-
-    });
+        });
 
 }
 
-
-
-buscador.addEventListener("input",()=>{
+buscador.addEventListener("input", () => {
 
     mostrarMacros(buscador.value);
 
 });
-
-
 
 mostrarMacros();
